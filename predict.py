@@ -38,7 +38,6 @@ def p_y_x_knn(y, k):
         for neigh in neighSetTemp:
             total += 1 if neigh == y_ else 0
         return total / k_
-    print(y)
     ySet = set()
     for x in y:
         for xx in x:
@@ -91,11 +90,6 @@ def model_selection_knn(Xval, Xtrain, yval, ytrain, k_values):
 
 
 def predict(x):
-    """
-	Function takes images as the argument. They are stored in the matrix X (NxD). 
-	Function returns a vector y (Nx1), where each element of the vector is a class numer {0, ..., 9} associated with recognized type of cloth. 
-	:param x: matrix NxD
-	:return: vector Nx1
-    """
-    pass
-
+    
+    x_train,y_train = pkl.load(open('ula.pkl',mode = 'rb'))
+    return np.transpose(np.array(classification(x,x_train,y_train,5)))
