@@ -20,7 +20,7 @@ def hamming_distance(X, X_train):
         a = []
         for zz in X_train:
             a.append(sum(abs(z-zz)))
-
+        xxx.append(a)
     return xxx
 
 
@@ -31,19 +31,25 @@ def sort_train_labels_knn(Dist, y):
     return y[order]
     # return np.array([y[index_array[int(x / N2), x % N2]] for x in range(N1 * N2)]).reshape((N1, N2))
 
-
-
-   """ number_of_classes = 4
-    resized = np.delete(y+1, range(k,len(y), axis=1)
-    summed_with_zero = np.vstack(np.apply_along_axis(
-        np.bincount, axis=1, arr=resized, minlength=number_of_classes+1))
-    summed = np.delete(summed_with_zero, 0, axis=1)
-    return summed / k """
-   
-
-
-
-
+def p_y_x_knn(y, k):
+    def getProbab(y_, neighSet, k_):
+        total = 0
+        neighSetTemp = neighSet[:k_]
+        for neigh in neighSetTemp:
+            total += 1 if neigh == y_ else 0
+        return total / k_
+    print(y)
+    ySet = set()
+    for x in y:
+        for xx in x:
+            ySet.add(xx)
+    output = []
+    for row in y:
+        temp = []
+        for yi in ySet:
+            temp.append(getProbab(yi, row, k))
+        output.append(np.array(temp))
+    return output
 
 def classification_error(p_y_x, y_true):
 
@@ -59,7 +65,7 @@ def classification(x,x_train,y_train, k):
     sorted_labels = 	sort_train_labels_knn(hamming_distance(x,x_train), y_train)
     pyx = p_y_x_knn(sorted_labels, k)
     output = []
-    for p in pyx.shape[0]:
+    for p in pyx:
         output.append(p.argmax())
     return output
 
